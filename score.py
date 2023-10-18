@@ -107,6 +107,10 @@ def get_examples(dataset_name, split, stem, n_shot, variant):
         from data_loaders import load_examples_trec
         examples = load_examples_trec(f'{stem}{split}.txt')
         closed_label_space = True
+    elif dataset_name == 'truthfulqa':
+        from data_loaders import load_examples_truthfulqa
+        examples = load_examples_truthfulqa(f'{stem}mc_task.jsonl')
+        closed_label_space = False
     else:
         raise ValueError(f'Unknown dataset {dataset_name}')
 

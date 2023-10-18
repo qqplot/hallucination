@@ -662,10 +662,6 @@ def load_examples_obqa(path):
             d['answers'] = choices
             d['label'] = label
 
-
-
-
-
             premise = d['premise']
             options = []
             for h in d['hypotheses']:
@@ -680,6 +676,37 @@ def load_examples_obqa(path):
             examples.append({'options' : options, 'label' : label })
     return examples
 
+
+def load_examples_truthfulqa(path):
+    with open(path) as lines:
+
+        # idx2abc = { 0 : 'A', 1 : 'B', 2 : 'C', 3 : 'D' }
+        # abc2idx = { 'A' : 0, 'B' : 1, 'C' : 2, 'D' : 3 }
+
+        examples = []
+        for line in lines:
+            j = json.loads(line)
+            
+            label = 0
+            hypotheses = []
+            for k, _ in j['mc1_targets'].items():
+                hypotheses.append(k)
+
+            premise = j['question']
+
+            options = []
+            for h in hypotheses:
+                o = {}
+                h = ' ' + h
+                o['premise'] = premise
+                o['hypothesis'] = h
+                o['uncond_premise'] = ' the answer is:'
+                o['uncond_hypothesis'] = h
+                options.append(o)
+
+            examples.append({'options' : options, 'label' : label })
+
+    return examples
 
 def proc_passage(s):
     s = s.replace("``", '"')
